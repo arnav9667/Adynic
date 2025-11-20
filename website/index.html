@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adynic | Digital Marketing Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#1e1b2e',
+                            800: '#2d2a3d',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+
+        .hero-underline {
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='12' viewBox='0 0 200 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.00025 9.50006C34.0002 4.50006 92.5003 -2.99994 198.0002 8.00006' stroke='%23818cf8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            background-size: 100% auto;
+            padding-bottom: 10px;
+        }
+
+        /* Button Color Animation */
+        .btn-animate {
+            background: linear-gradient(45deg, #1e1b2e, #4c489d, #6d28d9, #1e1b2e);
+            background-size: 300% 300%;
+            animation: gradientMove 4s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            transition: transform 0.5s ease-out, filter 0.5s ease;
+        }
+
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #e9d5ff; animation: move1 20s infinite alternate; }
+        .blob-2 { top: 20%; right: -10%; width: 40vw; height: 40vw; background: #cffafe; animation: move2 25s infinite alternate; }
+        .blob-3 { bottom: -10%; left: 20%; width: 45vw; height: 45vw; background: #fce7f3; animation: move3 22s infinite alternate; }
+
+        @keyframes move1 { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(50px, 50px) rotate(20deg); } }
+        @keyframes move2 { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(-50px, 30px) rotate(-15deg); } }
+        @keyframes move3 { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(30px, -50px) rotate(10deg); } }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.1);
+        }
+
+        .marquee-container {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        
+        .marquee-content {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+        }
+        
+        .marquee-scroll-left {
+            animation: scrollLeft 40s linear infinite;
+        }
+        
+        .marquee-scroll-right {
+            animation: scrollRight 40s linear infinite;
+        }
+
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollLeft {
+            to { transform: translateX(-50%); }
+        }
+        
+        @keyframes scrollRight {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Physics Tools Styles */
+        .tool-ball {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+            user-select: none;
+            overflow: hidden;
+            will-change: transform;
+        }
+        .tool-ball img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased relative overflow-x-hidden">
+
+    <div id="dynamic-bg">
+        <div class="blob blob-1" id="blob1"></div>
+        <div class="blob blob-2" id="blob2"></div>
+        <div class="blob blob-3" id="blob3"></div>
+    </div>
+
+    <div class="fixed w-full z-50 top-3 md:top-5 transition-all duration-300" id="navbar-container">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="w-full bg-white/80 backdrop-blur-xl rounded-full shadow-sm border border-white/50 pl-6 pr-2 py-2 flex justify-between items-center" id="navbar">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="Gemini_Generated_Image_i94yeji94yeji94y-removebg-preview.png" alt="Adynic Logo" class="h-8 md:h-9 w-auto object-contain">
+                </div>
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#services" class="text-sm font-semibold text-slate-700 hover:text-brand-600 transition">Services</a>
+                    <a href="#clients" class="text-sm font-semibold text-slate-700 hover:text-brand-600 transition">Clients</a>
+                    <a href="#about" class="text-sm font-semibold text-slate-700 hover:text-brand-600 transition">Why Adynic?</a>
+                    <a href="#testimonials" class="text-sm font-semibold text-slate-700 hover:text-brand-600 transition">Reviews</a>
+                    <a href="#faq" class="text-sm font-semibold text-slate-700 hover:text-brand-600 transition">FAQs</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    
+                    <a href="https://calendly.com/karnav231/30min" class="hidden md:inline-flex px-6 py-2.5 btn-animate text-white text-sm font-medium rounded-full shadow-sm hover:shadow-lg transition transform hover:-translate-y-0.5 cursor-pointer">
+                        Call Now
+                    </a>
+
+                    <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 mt-2 px-4">
+            <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden mx-auto max-w-lg">
+                <div class="px-4 pt-4 pb-4 space-y-1">
+                    <a href="#services" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">Services</a>
+                    <a href="#clients" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">Clients</a>
+                    <a href="#about" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">Why Adynic?</a>
+                    <a href="#testimonials" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition">Reviews</a>
+                    
+                    <a href="https://calendly.com/karnav231/30min" class="block w-full px-4 py-2.5 mt-2 text-center rounded-xl text-sm font-bold btn-animate text-white hover:shadow-lg shadow-md cursor-pointer">
+                        Call Now
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="relative pt-40 pb-16 lg:pt-48 lg:pb-24 overflow-hidden">
+        <div id="hero-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center transition-transform duration-100 ease-linear will-change-transform">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#4c489d] leading-tight mb-4 tracking-tight reveal">
+                Upgrade Your Ads
+            </h1>
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#4c489d] leading-tight mb-8 tracking-tight reveal delay-100 relative inline-block">
+                Upgrade Your <span class="hero-underline relative z-10 text-[#4c489d]">Revenue.</span>
+            </h1>
+            <div class="reveal delay-200 mb-4">
+                <p class="text-sm md:text-base font-medium text-slate-800">
+                    4+ years <span class="mx-2 text-slate-300">|</span> 50+ Brands <span class="mx-2 text-slate-300">|</span> 2+ Crore Ad spent
+                </p>
+            </div>
+            <p class="text-lg text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto reveal delay-300">
+                A trusted team of professionals, producing remarkable results across continents!
+            </p>
+            <div class="reveal delay-400 mb-16">
+                <button onclick="window.openModal()" class="inline-flex items-center justify-center px-8 py-3.5 btn-animate text-white font-medium rounded-md shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 text-base cursor-pointer">
+                    Schedule Call Now
+                </button>
+            </div>
+            <div class="reveal delay-500">
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-6">Our Performance Marketing Services are Certified by</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition duration-500">
+                    <div class="flex items-center gap-2"><i class="fa-brands fa-meta text-2xl text-blue-600"></i><span class="font-bold text-slate-700">Meta <span class="font-normal text-xs block -mt-1">Business Partner</span></span></div>
+                    <div class="flex items-center gap-2"><i class="fa-brands fa-shopify text-2xl text-green-500"></i><span class="font-bold text-slate-700 italic">shopify <span class="font-normal not-italic">partners</span></span></div>
+                    <div class="flex items-center gap-2"><i class="fa-brands fa-google text-2xl text-slate-700"></i><span class="font-bold text-slate-500 text-lg">Google <span class="font-normal text-slate-400">Partner</span></span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 relative reveal">
+                <div class="absolute top-[-40px] left-1/2 transform -translate-x-1/2 -rotate-12">
+                    <span class="text-purple-600 font-handwriting text-xl font-bold">NEW! <i class="fa-solid fa-star text-xs ml-1"></i></span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-[#4c489d]">Our Services</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+                <div class="bg-white/60 backdrop-blur-md border border-white p-6 rounded-2xl shadow-soft hover:shadow-md transition cursor-pointer reveal delay-100">
+                    <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h4 class="font-bold text-slate-900">Strategic Marketing</h4>
+                    <p class="text-xs text-slate-500 mt-2">Performance-first marketing built for long-term brand success.</p>
+                </div>
+                <div class="bg-white/60 backdrop-blur-md border border-white p-6 rounded-2xl shadow-soft hover:shadow-md transition cursor-pointer reveal delay-200">
+                    <div class="w-10 h-10 bg-pink-100 text-pink-600 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-hashtag"></i></div>
+                    <h4 class="font-bold text-slate-900">Social Media Mgmt</h4>
+                    <p class="text-xs text-slate-500 mt-2">Focus on your brand, well handle the strategy, posting & growth.</p>
+                </div>
+                <div class="bg-white/60 backdrop-blur-md border border-white p-6 rounded-2xl shadow-soft hover:shadow-md transition cursor-pointer reveal delay-300">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h4 class="font-bold text-slate-900">SEO Optimization</h4>
+                    <p class="text-xs text-slate-500 mt-2">Get ranked higher, faster, and smarter — with zero stress.</p>
+                </div>
+                <div class="bg-white/60 backdrop-blur-md border border-white p-6 rounded-2xl shadow-soft hover:shadow-md transition cursor-pointer reveal delay-400">
+                    <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4"><i class="fa-solid fa-code"></i></div>
+                    <h4 class="font-bold text-slate-900">Technical Solutions</h4>
+                    <p class="text-xs text-slate-500 mt-2">Reliable tech fixes that keep your business running 24/7.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-soft mb-12 border border-slate-50 reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 relative">
+                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 transform rotate-1 hover:rotate-0 transition duration-500">
+                            <div class="bg-white rounded-xl shadow-lg p-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="h-2 w-20 bg-slate-100 rounded"></div>
+                                    <div class="flex gap-1"><div class="h-2 w-2 bg-red-400 rounded-full"></div><div class="h-2 w-2 bg-yellow-400 rounded-full"></div></div>
+                                </div>
+                                <div class="h-32 w-full bg-slate-50 rounded-lg flex items-end justify-around px-2 pb-2">
+                                    <div class="w-4 bg-blue-200 h-[20%] rounded-t"></div>
+                                    <div class="w-4 bg-blue-300 h-[40%] rounded-t"></div>
+                                    <div class="w-4 bg-blue-400 h-[60%] rounded-t"></div>
+                                    <div class="w-4 bg-blue-500 h-[80%] rounded-t"></div>
+                                    <div class="w-4 bg-blue-600 h-[100%] rounded-t"></div>
+                                </div>
+                                <div class="flex justify-between mt-4 pt-4 border-t border-slate-100">
+                                    <div><div class="text-xs text-slate-400">Orders</div><div class="font-bold text-slate-800">3,764</div></div>
+                                    <div><div class="text-xs text-slate-400">Revenue</div><div class="font-bold text-slate-800">₹35,70,734</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2 block">ADS • ADS • ADS</span>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-4">Strategic Marketing</h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">Take your brand beyond basic advertising with data-backed paid campaigns that capture attention, convert customers, and keep your business growing nonstop!</p>
+                        <div class="flex gap-3">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Facebook Ads</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Google Ads</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-soft mb-12 border border-slate-50 reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2 block">DESIGN • DESIGN • DESIGN</span>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-4">Eye-catchy Designs</h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">Let your brand shine with high-quality, eye-catching designs that capture hearts, spark curiosity, and leave viewers wanting more.</p>
+                        <div class="flex gap-3">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Social Media</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Ads</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Videos</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-to-bl from-purple-50 to-pink-50 rounded-2xl p-6 transform -rotate-1 hover:rotate-0 transition duration-500 min-h-[300px] flex items-center justify-center">
+                             <div class="text-center">
+                                 <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-4">
+                                     <i class="fa-solid fa-pen-nib text-3xl text-purple-500"></i>
+                                 </div>
+                                 <div class="bg-white px-4 py-2 rounded-lg shadow-sm mx-auto max-w-[150px]">
+                                     <div class="h-2 bg-slate-100 rounded mb-2"></div>
+                                     <div class="h-2 bg-slate-100 rounded w-2/3"></div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-soft mb-12 border border-slate-50 reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 relative">
+                        <div class="bg-gradient-to-tr from-pink-50 to-orange-50 rounded-2xl p-6 transform rotate-1 hover:rotate-0 transition duration-500">
+                             <div class="bg-white rounded-xl shadow-lg max-w-xs mx-auto overflow-hidden">
+                                 <div class="p-3 flex items-center gap-2 border-b border-slate-50">
+                                     <div class="w-6 h-6 bg-slate-200 rounded-full"></div>
+                                     <div class="h-2 w-20 bg-slate-100 rounded"></div>
+                                 </div>
+                                 <div class="h-40 bg-slate-100 flex items-center justify-center">
+                                     <i class="fa-regular fa-image text-4xl text-slate-300"></i>
+                                 </div>
+                                 <div class="p-3">
+                                     <div class="flex gap-3 text-slate-400 mb-2 text-lg">
+                                         <i class="fa-regular fa-heart"></i>
+                                         <i class="fa-regular fa-comment"></i>
+                                         <i class="fa-regular fa-paper-plane"></i>
+                                     </div>
+                                     <div class="h-2 w-full bg-slate-100 rounded mb-1"></div>
+                                     <div class="h-2 w-2/3 bg-slate-100 rounded"></div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase mb-2 block">SOCIAL • SOCIAL • SOCIAL</span>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-4">Social Media</h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">We transform your social profiles into powerful marketing machines that attract attention, boost credibility, and drive real business results!</p>
+                        <div class="flex gap-3">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Facebook Ads</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Google Ads</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="tools" class="py-20 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+             <div class="text-center mb-10 pointer-events-none">
+                 <span class="text-[10px] font-bold tracking-widest text-purple-500 uppercase mb-2 block">APPLICATIONS</span>
+                 <h2 class="text-4xl font-bold text-[#4c489d]">Tools We Use</h2>
+                 <p class="text-slate-500 mt-2 text-sm">Future-Ready Technology!</p>
+            </div>
+            
+            <div id="physics-container" class="w-full h-[60vh] relative rounded-3xl overflow-hidden bg-white/30 backdrop-blur-sm border border-white/50 shadow-soft cursor-grab active:cursor-grabbing">
+                </div>
+        </div>
+    </section>
+
+    <section id="clients" class="bg-white relative">
+        <div class="absolute top-10 left-0 w-full z-20 text-center">
+            <h2 class="text-4xl font-bold text-[#4c489d] reveal">Our Clients</h2>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 hidden lg:block relative">
+                    <div class="sticky top-0 h-screen flex items-center justify-center p-10">
+                        <div class="relative w-full h-[70vh] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100">
+                            <img id="client-image-back" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover z-0" alt="Client Back">
+                            <img id="client-image-front" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover z-10" style="clip-path: inset(0 0 0 0);" alt="Client Front">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20"></div>
+                            <div class="absolute bottom-8 left-8 text-white z-20 transition-opacity duration-500" id="client-overlay-text">
+                                <p class="font-bold text-lg">Success Stories</p>
+                                <p class="text-sm opacity-80">Adynic Impact</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 py-[25vh]">
+                    <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">4CR+ Revenue Generated</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Askin Astrology worked his astrological wonders with Adynic</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"Adynic helped us scale our operations and reach a global audience. The ROI has been phenomenal."</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">Generated 12,000+ Leads</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Arjun Deshpande, the brain behind Generic Aadhaar</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"A dynamic duo of innovation. Their strategic approach to paid ads transformed our lead generation process."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">Sold Course to 10K+ People</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Naman Deshmukh effortlessly launched his course to stardom</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"From launch strategy to execution, Adynic's magic touch was evident in every step of our journey."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">300% ROI on Ads</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Astro Arun Pandit soared to success with e-commerce</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"Growing an e-commerce brand requires precision. Adynic provided exactly that with their data-driven campaigns."</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">50% Increase in Traffic</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Ridhima Arora of Namhya Foods spiced up her website</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"Our website's appeal and functionality were revamped completely. The user experience is now seamless."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="client-block min-h-[50vh] flex flex-col justify-center p-8 opacity-20 blur-[1px] transition-all duration-500 transform translate-y-4 scale-95" data-img="https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
+                        <div class="max-w-md">
+                            <span class="text-[10px] font-bold tracking-widest text-white bg-[#4c489d] px-3 py-1 rounded-full uppercase mb-4 inline-block shadow-md">Webinar Funnel Growth</span>
+                            <h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">Acharya Pankaj orchestrated success in webinar funnels</h3>
+                            <div class="flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-3xl text-slate-300"></i>
+                                <p class="text-slate-600 leading-relaxed text-lg">"From registration to conversion, the funnel optimization was flawless. Highly recommended!"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[10px] font-bold tracking-widest text-purple-500 uppercase mb-2 block">ONBOARDING • ONBOARDING • ONBOARDING</span>
+                <h2 class="text-4xl font-bold text-slate-900">How it starts?</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <div class="flex gap-4 reveal delay-100">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">Map Your Vision</h4>
+                            <p class="text-slate-600 text-sm">Share your goals with us — well shape the strategy that takes your brand to the next level.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 reveal delay-200">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">Leave It To Us</h4>
+                            <p class="text-slate-600 text-sm">Our expert team handles everything from execution to optimization. Smooth, simple, stress-free.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 reveal delay-300">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">Celebrate the Results</h4>
+                            <p class="text-slate-600 text-sm">Watch your business grow while we do the heavy lifting. Success becomes your new normal.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative reveal delay-400">
+                    <div class="bg-slate-900 rounded-[2.5rem] p-4 w-64 mx-auto shadow-2xl border-8 border-slate-80">
+                        <div class="bg-white rounded-[1rem] overflow-hidden h-[400px] relative">
+                             <div class="bg-slate-50 h-full p-4">
+                                 <div class="flex justify-between items-center mb-6">
+                                     <div class="h-2 w-12 bg-slate-200 rounded"></div>
+                                     <div class="h-6 w-6 bg-purple-100 rounded-full"></div>
+                                 </div>
+                                 <div class="bg-white p-3 rounded-xl shadow-sm mb-4">
+                                     <div class="text-xs text-slate-400 mb-1">Total Sales</div>
+                                     <div class="text-xl font-bold text-slate-800">₹1,24,05,554</div>
+                                     <div class="mt-2 flex items-end gap-1 h-12">
+                                         <div class="w-2 bg-purple-200 h-[10%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-300 h-[20%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-400 h-[30%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-600 h-[40%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-600 h-[50%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-200 h-[60%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-300 h-[70%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-400 h-[80%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-600 h-[90%] rounded-t"></div>
+                                         <div class="w-2 bg-purple-600 h-[100%] rounded-t"></div>
+                                         
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+             <div class="text-center mb-12 reveal">
+                <span class="text-[10px] font-bold tracking-widest text-purple-500 uppercase mb-2 block">SPECIAL • SPECIAL • SPECIAL</span>
+                <h2 class="text-4xl font-bold text-[#4c489d]">What makes us unique?</h2>
+                <p class="text-sm text-slate-500 mt-2">Others V/S Adynic</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-soft p-8 reveal delay-100 max-w-5xl mx-auto">
+                <div class="grid grid-cols-2 gap-8 border-b border-slate-100 pb-4 mb-4">
+                    <div class="text-center font-bold text-slate-400 uppercase text-xs tracking-wider">Others</div>
+                    <div class="text-center font-bold text-purple-600 uppercase text-xs tracking-wider bg-purple-50 rounded-full py-1">Adynic</div>
+                </div>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Slow response times</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Lightning-fast communication</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Outdated marketing strategies</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Modern, data-backed strategies</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Inconsistent reporting</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Accurate & transparent reporting</div>
+                    </div>
+                     <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Poor optimization practices</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Deep optimization for maximum ROI</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> One-size-fits-all approach</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Tailored solutions for every brand</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Limited creative quality</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> High-quality, engaging creatives</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> No dedicated support team</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Dedicated expert support</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Low technical proficiency</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Strong technical expertise across tools</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Lack of transparency</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Full transparency in every process</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center gap-3 text-slate-500 text-sm"><i class="fa-solid fa-circle-minus text-red-200"></i> Results that are not scalable</div>
+                        <div class="flex items-center gap-3 text-slate-800 font-medium text-sm"><i class="fa-solid fa-circle-check text-purple-500"></i> Scalable systems built for long-term growth</div>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                     <p class="text-xs text-slate-400">Still have a question? <a href="https://api.whatsapp.com/send?phone=918745017166&text=Hello%20%22Adynic%22" class="text-purple-600 font-bold underline">Chat with our experts</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-[12px] font-extrabold tracking-[0.2em] text-purple-500 uppercase mb-4 block">ADYNIC • ADYNIC • ADYNIC</span>
+                <h2 class="text-5xl font-bold text-[#4c489d] flex items-center justify-center gap-3">
+                    <img src="https://em-content.zobj.net/source/apple/354/person-getting-massage_1f486.png" alt="head" class="w-12 h-12 pb-2"> 
+                    Watch the Journey
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
+                <div class="relative group rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video cursor-pointer transition-transform duration-300 hover:-translate-y-2 reveal delay-100" onclick="toggleMainVideo(this)">
+                    <video 
+                        src="https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_25fps.mp4" 
+                        poster="./Gemini_Generated_Image_r2ke4zr2ke4zr2ke.png" 
+                        class="w-full h-full object-cover" 
+                        playsinline
+                        preload="metadata"
+                    ></video>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 pointer-events-none"></div>
+                    <div class="play-btn absolute inset-0 flex items-center justify-center transition-all duration-300 z-10">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-play text-purple-600 text-3xl pl-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative group rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video cursor-pointer transition-transform duration-300 hover:-translate-y-2 reveal delay-200" onclick="toggleMainVideo(this)">
+                    <video
+                        src="https://videos.pexels.com/video-files/1181247/1181247-hd_1920_1080_30fps.mp4" 
+                        poster="./Gemini_Generated_Image_35ggi935ggi935gg.png" 
+                        class="w-full h-full object-cover" 
+                        playsinline
+                        preload="metadata"
+                    ></video>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 pointer-events-none"></div>
+                    <div class="play-btn absolute inset-0 flex items-center justify-center transition-all duration-300 z-10">
+                        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-play text-purple-600 text-3xl pl-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <div class="py-10 border-t border-slate-50 bg-slate-50/50">
+            <div class="max-w-7xl mx-auto reveal delay-200">
+                <div class="marquee-container overflow-hidden mb-8">
+                    <div class="marquee-content marquee-scroll-left">
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-aws text-4xl text-slate-700"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-google text-4xl text-blue-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-airbnb text-4xl text-red-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-uber text-4xl text-black"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-lyft text-4xl text-pink-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-stripe text-4xl text-indigo-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-shopify text-4xl text-green-600"></i></div>
+                        
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-aws text-4xl text-slate-700"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-google text-4xl text-blue-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-airbnb text-4xl text-red-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-uber text-4xl text-black"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-lyft text-4xl text-pink-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-stripe text-4xl text-indigo-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-shopify text-4xl text-green-600"></i></div>
+                    </div>
+                </div>
+
+                <div class="marquee-container overflow-hidden">
+                    <div class="marquee-content marquee-scroll-right">
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-slack text-4xl text-purple-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-discord text-4xl text-indigo-400"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-spotify text-4xl text-green-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-playstation text-4xl text-blue-700"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-xbox text-4xl text-green-600"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-tiktok text-4xl text-black"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-youtube text-4xl text-red-600"></i></div>
+
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-slack text-4xl text-purple-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-discord text-4xl text-indigo-400"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-spotify text-4xl text-green-500"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-playstation text-4xl text-blue-700"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-xbox text-4xl text-green-600"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-tiktok text-4xl text-black"></i></div>
+                        <div class="w-40 h-32 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-4 border border-slate-100"><i class="fa-brands fa-youtube text-4xl text-red-600"></i></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#fce7f3]/30 backdrop-blur-xl py-8 border-t border-white/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="flex items-center gap-2 font-bold text-slate-800 text-xl">
+                    <i class="fa-solid fa-check-double text-purple-600"></i> Indian Best Digital Marketing Agency
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">© 2025 Adynic Marketing Agency | <a href="https://api.whatsapp.com/send?phone=918745017166&text=Hello%20%22Adynic%22" class="underline hover:text-purple-600">Arnav Kumar</a></p>
+            <div class="flex justify-center gap-6 text-slate-400">
+                <a href="https://www.linkedin.com/in/arnav-kumar-bb8201347/" class="hover:text-purple-600 transition"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                <a href="https://www.instagram.com/adynic_marketing_agency/" class="hover:text-purple-600 transition"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="https://www.youtube.com/@Adynic" class="hover:text-purple-600 transition"><i class="fa-brands fa-youtube text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="strategy-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0" id="modal-overlay" onclick="window.closeModal()"></div>
+        
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 transform scale-95 opacity-0 transition-all duration-300 overflow-hidden" id="modal-content">
+            <div class="bg-[#1e1b2e] p-6 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold">Let's Grow Together 🚀</h3>
+                    <p class="text-xs text-slate-300 mt-1">Fill the details below to book your call</p>
+                </div>
+                <button onclick="window.closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-8">
+                <form id="modalForm" class="space-y-5">
+                    <input type="hidden" name="_subject" value="New Strategy Call Booking!">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Name</label>
+                        <input type="text" id="modalName" name="name" placeholder="Enter your full name" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition bg-slate-50" required>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Phone</label>
+                            <input type="tel" id="modalPhone" name="phone" placeholder="+91 98765..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition bg-slate-50" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+                            <input type="email" id="modalEmail" name="email" placeholder="you@company.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition bg-slate-50" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Looking For?</label>
+                        <select id="modalService" name="service" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition bg-slate-50 text-slate-600">
+                            <option>Paid Ads (PPC)</option>
+                            <option>Social Media Management</option>
+                            <option>SEO Optimization</option>
+                            <option>Website Development</option>
+                            <option>Consultation</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Message</label>
+                        <textarea id="modalMessage" name="message" rows="3" placeholder="Tell us about your business goals..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition bg-slate-50"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 btn-animate text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 cursor-pointer">
+                        Confirm Booking
+                    </button>
+                </form>
+
+                <div id="modalSuccess" class="hidden text-center py-10">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl animate-bounce">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-slate-900 mb-2">Request Received!</h4>
+                    <p class="text-slate-500">Check your email for confirmation. We'll contact you shortly.</p>
+                    <button onclick="window.closeModal()" class="mt-6 text-purple-600 font-semibold hover:underline cursor-pointer">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div id="welcome-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-500 opacity-0" id="welcome-overlay"></div>
+        
+        <div class="relative bg-black rounded-2xl overflow-hidden shadow-2xl w-full max-w-3xl aspect-video transform scale-95 opacity-0 transition-all duration-500" id="welcome-content">
+            
+            <button onclick="window.closeWelcomeModal()" class="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition backdrop-blur-sm cursor-pointer">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div id="sound-overlay" class="absolute inset-0 z-10 flex items-center justify-center bg-black/30 cursor-pointer group" onclick="toggleSound()">
+                <div class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <i id="sound-icon" class="fa-solid fa-volume-xmark text-4xl text-white drop-shadow-lg"></i>
+                </div>
+                <p class="absolute mt-28 text-white font-bold tracking-wide uppercase text-sm drop-shadow-md">Click to Unmute</p>
+            </div>
+
+            <video id="welcome-video" src="./face 2 2 video.mp4" class="w-full h-full object-cover" playsinline muted loop></video>
+        </div>
+    </div>
+
+    <script>
+        // 3D Background Logic
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const blob1 = document.getElementById('blob1');
+            const blob2 = document.getElementById('blob2');
+            const blob3 = document.getElementById('blob3');
+            const hue = scrollY * 0.1; 
+            
+            if(blob1) {
+                blob1.style.filter = `blur(80px) hue-rotate(${hue}deg)`;
+                blob1.style.transform = `translateY(${scrollY * 0.2}px)`;
+            }
+            if(blob2) {
+                blob2.style.filter = `blur(80px) hue-rotate(${hue + 90}deg)`;
+                blob2.style.transform = `translateY(${scrollY * -0.1}px)`;
+            }
+            if(blob3) {
+                blob3.style.filter = `blur(80px) hue-rotate(${hue + 180}deg)`;
+            }
+
+            const heroContent = document.getElementById('hero-content');
+            if (heroContent) {
+                const scale = Math.max(0.9, 1 - scrollY * 0.0005);
+                const opacity = Math.max(0, 1 - scrollY * 0.002);
+                heroContent.style.transform = `scale(${scale})`;
+                heroContent.style.opacity = opacity;
+            }
+        });
+
+        // Modal Logic
+        window.openModal = function() {
+            const modal = document.getElementById('strategy-modal');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalContent = document.getElementById('modal-content');
+            
+            if (modal && modalOverlay && modalContent) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalOverlay.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+        };
+
+        window.closeModal = function() {
+            const modal = document.getElementById('strategy-modal');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalContent = document.getElementById('modal-content');
+            const modalForm = document.getElementById('modalForm');
+            const modalSuccess = document.getElementById('modalSuccess');
+            
+            if (modal && modalOverlay && modalContent) {
+                modalOverlay.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                modalContent.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    if(modalForm) {
+                        modalForm.style.display = 'block';
+                        modalForm.reset();
+                        const btn = modalForm.querySelector('button');
+                        if(btn) {
+                            btn.innerText = 'Confirm Booking';
+                            btn.disabled = false;
+                        }
+                    }
+                    if(modalSuccess) modalSuccess.classList.add('hidden');
+                }, 300);
+            }
+        };
+
+        // Welcome Modal Logic
+        window.addEventListener('load', () => {
+            if (!sessionStorage.getItem('welcomeShown')) {
+                setTimeout(() => {
+                    const modal = document.getElementById('welcome-modal');
+                    const overlay = document.getElementById('welcome-overlay');
+                    const content = document.getElementById('welcome-content');
+                    const video = document.getElementById('welcome-video');
+
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                        // Video ko mute hi play karna padega pehle
+                        if(video) {
+                            video.muted = true;
+                            video.play().catch(e => console.log("Autoplay blocked", e));
+                        }
+                        
+                        setTimeout(() => {
+                            overlay.classList.remove('opacity-0');
+                            content.classList.remove('scale-95', 'opacity-0');
+                            content.classList.add('scale-100', 'opacity-100');
+                        }, 10);
+                    }
+                }, 1500); 
+                sessionStorage.setItem('welcomeShown', 'true');
+            }
+        });
+
+        // Sound Toggle Function
+        window.toggleSound = function() {
+            const video = document.getElementById('welcome-video');
+            const soundOverlay = document.getElementById('sound-overlay');
+            const soundIcon = document.getElementById('sound-icon');
+
+            if(video) {
+                // Video ko unmute karo aur shuru se chalao
+                video.muted = false;
+                video.currentTime = 0;
+                video.volume = 1.0;
+                video.play();
+
+                // Overlay ko hata do taki video saaf dikhe
+                if(soundOverlay) {
+                    soundOverlay.style.opacity = '0';
+                    soundOverlay.style.pointerEvents = 'none'; // Taki click video par jaye ab
+                }
+            }
+        };
+
+        window.closeWelcomeModal = function() {
+            const modal = document.getElementById('welcome-modal');
+            const overlay = document.getElementById('welcome-overlay');
+            const content = document.getElementById('welcome-content');
+            const video = document.getElementById('welcome-video');
+
+            if (modal) {
+                overlay.classList.add('opacity-0');
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                if(video) {
+                    video.pause();
+                    video.currentTime = 0; // Reset video
+                }
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 500);
+            }
+        };
+
+
+        // Form Handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalForm = document.getElementById('modalForm');
+            const modalSuccess = document.getElementById('modalSuccess');
+
+            const handleFormSubmit = (form, successDiv) => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const btn = form.querySelector('button');
+                    const originalText = btn.innerText;
+                    
+                    btn.innerText = 'Sending...';
+                    btn.disabled = true;
+
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+                    
+                    if(!data._subject) data._subject = "New Contact Form Submission";
+
+                    fetch("https://formsubmit.co/ajax/karnav231@gmail.com", {
+                        method: "POST",
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        form.style.display = 'none';
+                        successDiv.classList.remove('hidden');
+                        console.log("Success:", data);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Something went wrong! Please try again or email us directly.");
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    });
+                });
+            };
+
+            if(modalForm && modalSuccess) handleFormSubmit(modalForm, modalSuccess);
+        });
+
+        // Mobile Menu
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if(btn && menu) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        }
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Client Animation Logic
+        const clientBlocks = document.querySelectorAll('.client-block');
+        const imgBack = document.getElementById('client-image-back');
+        const imgFront = document.getElementById('client-image-front');
+        let currentActiveIndex = -1;
+
+        const centerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const index = Array.from(clientBlocks).indexOf(entry.target);
+
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-20', 'blur-[1px]', 'translate-y-4', 'scale-95');
+                    entry.target.classList.add('opacity-100', 'blur-0', 'translate-y-0', 'scale-100');
+                    
+                    if (index !== currentActiveIndex && imgBack && imgFront) {
+                        const newSrc = entry.target.getAttribute('data-img');
+                        const direction = index > currentActiveIndex ? 'down' : 'up';
+                        
+                        if (currentActiveIndex === -1) {
+                            imgBack.src = newSrc;
+                            imgFront.src = newSrc;
+                        } else {
+                            animateImageWipe(newSrc, direction);
+                        }
+                        currentActiveIndex = index;
+                    }
+                } else {
+                    entry.target.classList.remove('opacity-100', 'blur-0', 'translate-y-0', 'scale-100');
+                    entry.target.classList.add('opacity-20', 'blur-[1px]', 'translate-y-4', 'scale-95');
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0, 
+            rootMargin: "-45% 0px -45% 0px" 
+        });
+
+        clientBlocks.forEach(block => centerObserver.observe(block));
+
+        function animateImageWipe(newSrc, direction) {
+            if (!imgBack || !imgFront) return;
+            
+            imgBack.src = imgFront.src;
+            imgFront.src = newSrc;
+            imgFront.style.transition = 'none'; 
+            
+            if (direction === 'down') {
+                imgFront.style.clipPath = 'inset(0 0 100% 0)';
+            } else {
+                imgFront.style.clipPath = 'inset(100% 0 0 0)';
+            }
+            imgFront.offsetHeight; 
+            imgFront.style.transition = 'clip-path 0.8s cubic-bezier(0.65, 0, 0.35, 1)'; 
+            imgFront.style.clipPath = 'inset(0 0 0 0)';
+        }
+
+        // Video Logic
+        window.toggleMainVideo = function(container) {
+            const video = container.querySelector('video');
+            const playBtn = container.querySelector('.play-btn');
+            
+            if (video.paused) {
+                document.querySelectorAll('video').forEach(v => {
+                    if (v !== video && !v.paused) {
+                        v.pause();
+                        const otherBtn = v.parentElement.querySelector('.play-btn');
+                        if(otherBtn) otherBtn.style.opacity = '1';
+                    }
+                });
+                video.play().catch(e => console.log("Autoplay prevented", e));
+                if(playBtn) playBtn.style.opacity = '0';
+            } else {
+                video.pause();
+                if(playBtn) playBtn.style.opacity = '1';
+            }
+        };
+
+        // Updated Physics Logic (Custom JS instead of Matter.js Mouse)
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('physics-container');
+            if(!container) return;
+
+            const tools = [
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/shopify/shopify-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/aftereffects/aftereffects-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xd/xd-plain.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/slack/slack-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/trello/trello-plain.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg',
+                 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/facebook/facebook-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/twitter/twitter-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/youtube/youtube-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/woocommerce/woocommerce-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/magento/magento-original.svg',
+                'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/salesforce/salesforce-original.svg'
+            ];
+
+            const balls = [];
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            // Create Custom Physics Balls
+            tools.forEach((src) => {
+                const ball = document.createElement('div');
+                ball.className = 'tool-ball';
+                const size = 60 + Math.random() * 20;
+                ball.style.width = `${size}px`;
+                ball.style.height = `${size}px`;
+                ball.innerHTML = `<img src="${src}" alt="Tool">`;
+                
+                // Initial Random Position
+                let x = Math.random() * (width - size);
+                let y = Math.random() * (height - size);
+                
+                // Initial Velocity
+                let vx = (Math.random() - 0.5) * 2;
+                let vy = (Math.random() - 0.5) * 2;
+
+                container.appendChild(ball);
+                balls.push({ el: ball, x, y, vx, vy, size });
+            });
+
+            // Animation Loop
+            function animate() {
+                balls.forEach(ball => {
+                    // Update Position
+                    ball.x += ball.vx;
+                    ball.y += ball.vy;
+
+                    // Bounce off walls
+                    if (ball.x <= 0 || ball.x + ball.size >= container.clientWidth) ball.vx *= -1;
+                    if (ball.y <= 0 || ball.y + ball.size >= container.clientHeight) ball.vy *= -1;
+
+                    // Mouse Repel Logic
+                    const rect = container.getBoundingClientRect();
+                    if(mousePos.x > 0 && mousePos.y > 0) {
+                         const dx = (ball.x + ball.size/2) - mousePos.x;
+                         const dy = (ball.y + ball.size/2) - mousePos.y;
+                         const dist = Math.sqrt(dx*dx + dy*dy);
+                         
+                         if(dist < 150) {
+                             const force = (150 - dist) * 0.05;
+                             ball.vx += (dx / dist) * force;
+                             ball.vy += (dy / dist) * force;
+                         }
+                    }
+                    
+                    // Apply friction to stabilize speed
+                    ball.vx *= 0.99;
+                    ball.vy *= 0.99;
+                    
+                    // Minimum movement to keep them floating
+                    if(Math.abs(ball.vx) < 0.5) ball.vx += (Math.random() - 0.5) * 0.1;
+                    if(Math.abs(ball.vy) < 0.5) ball.vy += (Math.random() - 0.5) * 0.1;
+
+                    // Limit Max Speed
+                    const speed = Math.sqrt(ball.vx*ball.vx + ball.vy*ball.vy);
+                    if(speed > 4) {
+                        ball.vx = (ball.vx / speed) * 4;
+                        ball.vy = (ball.vy / speed) * 4;
+                    }
+
+                    ball.el.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+                });
+                requestAnimationFrame(animate);
+            }
+
+            // Track Mouse relative to container
+            let mousePos = { x: -1000, y: -1000 };
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                mousePos.x = e.clientX - rect.left;
+                mousePos.y = e.clientY - rect.top;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                 mousePos = { x: -1000, y: -1000 };
+            });
+
+            animate();
+        });
+    </script>
+</body>
+</html>
