@@ -1,3 +1,8 @@
+# Creative style guide
+
+## ARNAV'S APPROVED STANDARD (most important)
+Arnav rejected plain text / simple chat posts as "normal". He approved the PROBLEM-SOLVING DIAGNOSIS style (reels/template-diagnosis-carousel.py, 2026-11-11 funnel leak post): premium cinematic look (near-black bg, neon accent glow, 3D perspective grid floor, glass cards), real UI MOCKUPS and DIAGRAMS (ad cards with attention meters, landing-page wireframes with problem callouts, checkout step flows, follow-up timelines, funnels with numbered leak points), problem chips in red + a bright FIX box on every slide, and a before→after payoff slide. Every creative must SHOW the problem visually and solve it. Build every POST to this level (vary the accent colour/theme); Reels should animate the same idea (e.g. money dripping from the funnel, leaks sealing one by one).
+
 # Creative style guide (Gen-Z / desi, learned from top Indian agency accounts Arnav shared)
 What works right now (cynex.production, cineverze.in, doodhvalefarms examples):
 - Hinglish / Hindi hooks with desi humour and relatable pain ("Har business owner ka yahi rona hai", "Scroll mat karna" style reverse psychology)
