@@ -5,3 +5,5 @@
 2026-11-10 | REEL | Reel | Midnight Gold | SEO myth vs fact | 3 SEO myths wasting your time | scheduled 6:00 PM
 2026-11-11 | POST | Carousel | Cinematic black-red | Funnel leak diagnosis | Aapke ads ka paisa yahan leak ho raha hai | scheduled 09:00
 2026-11-10 | CLASS | Reel | Notebook yellow | Class 01: Who is your real customer | Aapka REAL customer kaun hai? | posted 1:10 PM https://www.instagram.com/reel/DfjX8X6AMj-/
+2026-11-11 | CLASS | Reel | Notebook mint | Class 02: How to build an offer that sells | Aisa offer banao jo khud bike | scheduled 23:10
+2026-11-11 | REEL | Reel | Ocean Blue | Boost vs Ads Manager | Boost dabaya, sale zero? | scheduled 23:10
