@@ -7,3 +7,6 @@
 2026-11-10 | CLASS | Reel | Notebook yellow | Class 01: Who is your real customer | Aapka REAL customer kaun hai? | posted 1:10 PM https://www.instagram.com/reel/DfjX8X6AMj-/
 2026-11-11 | CLASS | Reel | Notebook mint | Class 02: How to build an offer that sells | Aisa offer banao jo khud bike | posted 11:09 PM https://www.instagram.com/reel/DfnCOwuHNcH/
 2026-11-11 | REEL | Reel | Ocean Blue | Boost vs Ads Manager | Boost dabaya, sale zero? | posted 11:07 PM https://www.instagram.com/reel/DfnBt2ykilv/
+2026-11-12 | POST | Single image | Pop yellow-red | Price in DM mistake | "Price DM karo" = Customer gaya | sent to Arnav for manual upload
+2026-11-12 | CLASS | Reel | Notebook pink | Class 03: Website that turns visitors into buyers | Aisi website banao jo visitors ko buyers banaye | sent to Arnav for manual upload
+2026-11-12 | REEL | Reel | Emerald | Google Business Profile before/after | Aapki dukaan Google pe aisi dikhti hai? | sent to Arnav for manual upload
